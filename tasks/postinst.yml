@@ -1,0 +1,18 @@
+---
+
+- block:
+  - name: install vscode tidalcycles extension
+    shell: code --install-extension tidalcycles.vscode-tidalcycles 
+    register: vstidin
+    changed_when: "not vstidin.stdout|search('already installed')"
+  
+  
+  - name: install vscode haskell syntax extension
+    shell: code --install-extension justusadam.language-haskell
+    register: vshaskin
+    changed_when: "not vstidin.stdout|search('already installed')"
+  
+  become: yes
+  become_method: su
+  become_user: "{{ansible_env.SUDO_USER}}"
+  become_flags: '-s /bin/bash'
