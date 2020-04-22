@@ -2,6 +2,6 @@
 - name: install vscode editor
   apt:
     state: latest
-    update_cache: no
+    update_cache: yes
     install_recommends: no
     name: 'code'
