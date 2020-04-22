@@ -4,13 +4,13 @@
   - name: install vscode tidalcycles extension
     shell: code --install-extension tidalcycles.vscode-tidalcycles 
     register: vstidin
-    changed_when: "not vstidin.stdout|search('already installed')"
+    changed_when: "not vstidin.stdout is search('All the requested packages are already installed:')"
   
   
   - name: install vscode haskell syntax extension
     shell: code --install-extension justusadam.language-haskell
     register: vshaskin
-    changed_when: "not vstidin.stdout|search('already installed')"
+    changed_when: "not vshaskin.stdout is search('All the requested packages are already installed:')"
   
   become: yes
   become_method: su

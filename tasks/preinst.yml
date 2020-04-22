@@ -1,0 +1,11 @@
+---
+- name: get vscode repo key from microsoft
+  apt_key:
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    state: present
+
+- name: add vscode repository
+  template:
+    src: templates/vscode.list.template
+    dest: /etc/apt/sources.list.d/vscode.list
+    mode: '0644'

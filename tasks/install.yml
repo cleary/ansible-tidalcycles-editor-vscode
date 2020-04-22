@@ -1,5 +1,7 @@
 ---
 - name: install vscode editor
-  snap:
-    state: present
-    name: code
+  apt:
+    state: latest
+    update_cache: no
+    install_recommends: no
+    name: 'code'
