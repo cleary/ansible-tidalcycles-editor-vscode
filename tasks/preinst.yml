@@ -7,7 +7,7 @@
 - name: add vscode repository
   apt_repository:
     repo: deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main
-    filename: vscode.list
+    filename: vscode
     state: present
     validate_certs: yes
     update_cache: yes
