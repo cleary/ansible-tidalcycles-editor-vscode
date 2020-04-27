@@ -1,0 +1,13 @@
+{
+    "tidalcycles.sounds.paths": [
+        "/home/{{ansible_env.SUDO_USER}}/.local/share/SuperCollider/downloaded-quarks/Dirt-Samples/"
+{% if custom_sample_paths is defined %}
+  {% for item in custom_sample_paths %}
+  		, "{{ item }}/"
+  {% endfor %}
+{% endif %}
+    ],
+    "files.associations": {
+        "*.tidal": "haskell"
+    }
+}

@@ -12,6 +12,13 @@
     register: vshaskin
     changed_when: "not vstidin.stdout|search('already installed')"
   
+  - name: create/replace VSCode ~/.config/Code/User/settings.json (taking a backup)
+    template:
+      src: templates/settings.json.template
+      dest: "/home/{{ansible_env.SUDO_USER}}/.config/Code/User/settings.json"
+      mode: 0640
+      backup: yes
+
   become: yes
   become_method: su
   become_user: "{{ansible_env.SUDO_USER}}"
