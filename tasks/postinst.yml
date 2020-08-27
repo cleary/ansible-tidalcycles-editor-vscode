@@ -18,6 +18,8 @@
       dest: "/home/{{ansible_env.SUDO_USER}}/.config/Code/User/settings.json"
       mode: 0640
       backup: yes
+    tags:
++     - config
 
   become: yes
   become_method: su
