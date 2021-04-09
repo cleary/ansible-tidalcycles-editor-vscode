@@ -9,5 +9,8 @@
     ],
     "files.associations": {
         "*.tidal": "haskell"
-    }
+    },
+{% if custom_boottidal_hs %}
+    "tidalcycles.bootTidalPath": "{{ boottidal_hs }}"
+{% endif %}
 }

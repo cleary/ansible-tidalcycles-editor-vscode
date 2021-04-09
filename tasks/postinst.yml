@@ -1,5 +1,39 @@
 ---
 
+# mutable instruments ugen setup
+- block:
+  - name: create required config scripts directory
+    file:
+      path: "/home/{{ansible_env.SUDO_USER}}/.local/share/ansible-tidalcycles/scripts/"
+      state: directory
+      recurse: yes
+
+  - name: copy mutable-instruments params file to scripts dir
+    get_url:
+      url: https://raw.githubusercontent.com/cleary/ansible-tidalcycles/master/files/mutable-instruments-ugens_parameters.hs
+      dest: "/home/{{ansible_env.SUDO_USER}}/.local/share/ansible-tidalcycles/scripts/mutable-instruments-ugens_parameters.hs"
+
+  - name: copy custom BootTidal.hs file to scripts dir
+    get_url:
+      url: https://raw.githubusercontent.com/cleary/ansible-tidalcycles/master/files/BootTidal.hs
+      dest: "{{ boottidal_hs }}"
+
+  - name: load mutable-instruments parameter file in tidal boot file
+    lineinfile:
+        path: "{{ boottidal_hs }}"
+        insertbefore: '^:set prompt (.*$)'
+        line: ":script /home/{{ansible_env.SUDO_USER}}/.local/share/ansible-tidalcycles/scripts/mutable-instruments-ugens_parameters.hs"
+
+  - name: set fact to load custom BootTidal.hs in settings 
+    set_fact:
+      custom_boottidal_hs: True
+
+  become: yes
+  become_method: su
+  become_user: "{{ansible_env.SUDO_USER}}"
+  become_flags: '-s /bin/bash'
+  when: sc_ugens is defined and '"mutable-instruments" in sc_ugens'
+
 - block:
   - name: install vscode tidalcycles extension
     shell: code --install-extension tidalcycles.vscode-tidalcycles 
