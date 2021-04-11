@@ -32,7 +32,7 @@
   become_method: su
   become_user: "{{ansible_env.SUDO_USER}}"
   become_flags: '-s /bin/bash'
-  when: sc_ugens is defined and '"mutable-instruments" in sc_ugens'
+  when: sc_ugens is defined and "mutable-instruments" in sc_ugens
 
 - block:
   - name: install vscode tidalcycles extension
