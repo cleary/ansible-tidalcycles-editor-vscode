@@ -1,7 +1,0 @@
----
-
-boottidal_hs: "/home/{{ansible_env.SUDO_USER}}/.local/share/ansible-tidalcycles/scripts/boottidal.vscode.hs"
-
-# this variable controls whether we load the above BootTidal.hs in settings.json
-# controlled in the tasks, not intended for editing per se
-custom_boottidal_hs: False
