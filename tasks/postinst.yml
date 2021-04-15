@@ -12,7 +12,7 @@
 
   - name: "set default BootTidal.hs location ({{ tidloc.stdout }})"
     set_fact:
-      boottidal_hs: tidloc.stdout 
+      boottidal_hs: "{{ tidloc.stdout }}/BootTidal.hs"
 
   - name: create required config scripts directory
     file:
