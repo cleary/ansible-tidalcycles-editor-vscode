@@ -3,49 +3,24 @@
 - set_fact:
     custom_boottidal_hs: False
 
-# mutable instruments ugen setup
 - block:
-  - name: get default BootTidal.hs locations
-    shell: ghc-pkg field tidal data-dir | head -n 1 | awk '{print $2}'
-    register: tidloc
-    changed_when: False
-
-  - name: "set default BootTidal.hs location ({{ tidloc.stdout }})"
-    set_fact:
-      boottidal_hs: "{{ tidloc.stdout }}/BootTidal.hs"
-
-  - name: create required config scripts directory
-    file:
-      path: "/home/{{ansible_env.SUDO_USER}}/.local/share/ansible-tidalcycles/scripts/"
-      state: directory
-      recurse: yes
-
-  - name: copy mutable-instruments params file to scripts dir
-    get_url:
-      url: https://raw.githubusercontent.com/cleary/ansible-tidalcycles/master/files/mutable-instruments-ugens_parameters.hs
-      dest: "/home/{{ansible_env.SUDO_USER}}/.local/share/ansible-tidalcycles/scripts/mutable-instruments-ugens_parameters.hs"
-
-  - name: load mutable-instruments parameter file in tidal boot file
-    lineinfile:
-        path: "{{ boottidal_hs }}"
-        insertbefore: '^:set prompt (.*$)'
-        line: ":script /home/{{ansible_env.SUDO_USER}}/.local/share/ansible-tidalcycles/scripts/mutable-instruments-ugens_parameters.hs"
+  - include_role:
+      name: "roles/ugens-{{ item }}"
+    vars:
+      editor: "{{ vscode.editor }}"
+    with_items: "{{ sc_ugens }}"
 
   - set_fact:
       custom_boottidal_hs: True
+    when: '"mutable-instruments" in sc_ugens'
 
-  become: yes
-  become_method: su
-  become_user: "{{ansible_env.SUDO_USER}}"
-  become_flags: '-s /bin/bash'
-  when: sc_ugens is defined and "mutable-instruments" in sc_ugens
+  when: sc_ugens is defined
 
 - block:
   - name: install vscode tidalcycles extension
     shell: code --install-extension tidalcycles.vscode-tidalcycles 
     register: vstidin
     changed_when: "not vstidin.stdout is search('All the requested packages are already installed:')"
-  
   
   - name: install vscode haskell syntax extension
     shell: code --install-extension justusadam.language-haskell
