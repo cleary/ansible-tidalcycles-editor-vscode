@@ -1,4 +1,14 @@
 ---
+
+- name: install dependencies
+  apt:
+    state: latest
+    update_cache: yes
+    install_recommends: no
+    name: 
+      - apt-transport-https
+      - gpg
+
 - name: get vscode repo key from microsoft
   apt_key:
     url: https://packages.microsoft.com/keys/microsoft.asc
