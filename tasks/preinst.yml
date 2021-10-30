@@ -7,7 +7,9 @@
     install_recommends: no
     name: 
       - apt-transport-https
+      - dirmngr
       - gpg
+      - gpg-agent
 
 - name: get vscode repo key from microsoft
   apt_key:
