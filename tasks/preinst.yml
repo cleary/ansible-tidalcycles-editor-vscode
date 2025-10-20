@@ -11,15 +11,23 @@
       - gpg
       - gpg-agent
 
-- name: get vscode repo key from microsoft
-  apt_key:
-    url: https://packages.microsoft.com/keys/microsoft.asc
-    state: present
+- name: check if vscode already available (eg via snap)
+  command: "apt-cache madison code | grep ^code"
+  register: vscode
+  changed_when: false
+  failed_when: false
 
-- name: add vscode repository
-  apt_repository:
-    repo: deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main
-    filename: vscode
-    state: present
-    validate_certs: yes
-    update_cache: yes
+- block:
+  - name: get vscode repo key from microsoft
+    apt_key:
+      url: https://packages.microsoft.com/keys/microsoft.asc
+      state: present
+
+  - name: add vscode repository
+    apt_repository:
+      repo: deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main
+      filename: vscode
+      state: present
+      validate_certs: yes
+      update_cache: yes
+  when: vscode.rc == 1
